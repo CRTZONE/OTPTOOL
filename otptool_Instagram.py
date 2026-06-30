@@ -5,69 +5,77 @@ import platform
 import threading
 
 # কালার কোড
-R = "\033[1;31m" # Red
-G = "\033[1;32m" # Green
-Y = "\033[1;33m" # Yellow
-C = "\033[1;36m" # Cyan
-W = "\033[1;37m" # White
+R = "\033[1;31m"   # Red
+G = "\033[1;32m"   # Green
+Y = "\033[1;33m"   # Yellow
+C = "\033[1;36m"   # Cyan
+W = "\033[1;37m"   # White
 RESET = "\033[0m"
 
+
 def clear():
-    os.system('clear' if os.name == 'posix' else 'cls')
+    os.system('clear' if os.name == 'posix' else 'cls')
+
 
 def get_arch():
-    machine = platform.machine().lower()
-    if "aarch64" in machine or "arm64" in machine:
-        return "64"
-    return "32"
+    machine = platform.machine().lower()
+    if "aarch64" in machine or "arm64" in machine:
+        return "64"
+    return "32"
+
 
 def main():
-    clear()
-    arch = get_arch()
-    
-    # ৩২-বিট ইউজারদের জন্য ব্লক
-    if arch != "64":
-        print(f"\n{R} [!] সরি মামা, আপনার ফোনটি ৩২-বিটের। এই টুলসটি চলবে না।{RESET}")
-        sys.exit()
+    clear()
+    arch = get_arch()
 
-    try:
-        # otptool.so ইমপোর্ট করা হচ্ছে
-        print(f"{C} [!] CRT ইঞ্জিন লোড হচ্ছে...{RESET}")
-        time.sleep(1)
-        
-        import otptool
-        
-        # আপনার স্ক্রিপ্টের লোগো ফাংশন কল
-        otptool.professional_logo()
-        
-        print(f"  │ {G}[+] {W}সিস্টেম চেক    : {G}পাসড (৬৪-বিট){RESET}")
-        print(f"  │ {G}[+] {W}বট স্ট্যাটাস    : {G}অনলাইন{RESET}")
-        print(f"  └────────────────────────────────────────────────────────")
-        print(f"\n{C} [🚀] পোলিং শুরু হচ্ছে... কোপানো শুরু করেন মামাহ!{RESET}\n")
+    # ৩২-বিট ইউজারদের জন্য ব্লক
+    if arch != "64":
+        print(f"\n{R}[!] সরি মামা, আপনার ফোনটি ৩২-বিটের। এই টুলসটি চলবে না।{RESET}")
+        sys.exit()
 
-        # আপনার দেওয়া সেই ইনফিনিটি পোলিং লজিক
-        while True:
-            try:
-                # COKIESUSER এর ভেতরের bot অবজেক্ট ব্যবহার করে
-                otptool.bot.infinity_polling(timeout=10, long_polling_timeout=5)
-            except Exception as e:
-                # এরর আসলে ৫ সেকেন্ড ওয়েট করে আবার ট্রাই করবে
-                time.sleep(5)
+    try:
+        # otptool.so ইমপোর্ট করা হচ্ছে
+        print(f"{C}[!] CRT ইঞ্জিন লোড হচ্ছে...{RESET}")
+        time.sleep(1)
 
-    except ImportError:
-        print(f"\n{R} [!] ত্রুটি: otptool.so ফাইলটি পাওয়া যায়নি!{RESET}")
-        print(f"{Y} [?] টিপস: ফাইলটি রিনেম করে 'otptool.so' রাখুন।{RESET}")
-        sys.exit()
-    except AttributeError:
-        print(f"\n{R} [!] ত্রুটি: মডিউলের ভেতর 'bot' বা 'professional_logo' পাওয়া যায়নি।{RESET}")
-        sys.exit()
-    except Exception as e:
-        print(f"\n{R} [!] মারাত্মক এরর: {e}{RESET}")
-        sys.exit()
+        import otptool
 
-if name == "main":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print(f"\n\n{R} [!] ইউজার দ্বারা বন্ধ করা হয়েছে।{RESET}")
-        sys.exit()
+        # লোগো ফাংশন কল
+        otptool.professional_logo()
+
+        print(f"  │ {G}[+] {W}সিস্টেম চেক    : {G}পাসড (৬৪-বিট){RESET}")
+        print(f"  │ {G}[+] {W}বট স্ট্যাটাস   : {G}অনলাইন{RESET}")
+        print("  └────────────────────────────────────────────────────────")
+
+        print(f"\n{C}[🚀] পোলিং শুরু হচ্ছে... কোপানো শুরু করেন মামাহ!{RESET}\n")
+
+        while True:
+            try:
+                otptool.bot.infinity_polling(
+                    timeout=10,
+                    long_polling_timeout=5
+                )
+            except Exception as e:
+                print(f"{R}[!] Polling Error: {e}{RESET}")
+                time.sleep(5)
+
+    except ImportError:
+        print(f"\n{R}[!] ত্রুটি: otptool.so ফাইলটি পাওয়া যায়নি!{RESET}")
+        print(f"{Y}[?] টিপস: ফাইলটি rename করে 'otptool.so' রাখুন।{RESET}")
+        sys.exit()
+
+    except AttributeError:
+        print(f"\n{R}[!] ত্রুটি: module-এর ভিতরে 'bot' বা 'professional_logo' পাওয়া যায়নি।{RESET}")
+        sys.exit()
+
+    except Exception as e:
+        print(f"\n{R}[!] মারাত্মক এরর: {e}{RESET}")
+        sys.exit()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(f"\n\n{R}[!] ইউজার দ্বারা বন্ধ করা হয়েছে।{RESET}")
+        sys.exit()
