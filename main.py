@@ -1,0 +1,3 @@
+import otptool
+
+otptool.main()
