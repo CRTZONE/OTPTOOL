@@ -1,3 +1,3 @@
 import otptool
 
-otptool.main()
+otptool.menu()
